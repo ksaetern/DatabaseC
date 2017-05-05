@@ -23,8 +23,8 @@ void	ft_adddata(FILE *fp, int topics, char **tmp, char *databasename)
 	ft_bzero(create.addline, 1000);
 	while (topiccreated <= topics)
 	{
-		printf("[Database Name:%26s]\n", databasename);
-		printf("[Topic:%34s]\n[%40s]\n", &tmp[j][0],
+		printf("[Database Name:%s%26s%s]\n", YELLOW, databasename, RESET);
+		printf("[Topic:%s%34s%s]\n[%40s]\n", CYAN, &tmp[j][0], RESET,
 		 "Enter data for topic:");
 		ft_get_next_line(0, &create.line);
 		ft_csvformat(create.addline, create.line, topiccreated, topics);
@@ -32,13 +32,14 @@ void	ft_adddata(FILE *fp, int topics, char **tmp, char *databasename)
 		topiccreated++;
 	}
 	fprintf(fp, "%s\n",	create.addline);
-	printf("Would you like to to enter another round of data?\n");
+	printf("%sWould you like to to enter more data?%s\n",
+		GREEN, RESET);
 	printf("[%40s]\n[%40s]\n", "yes","no");
 	scanf("%s", create.name);
 	if (strcmp(create.name, YES) == 0)
 		ft_adddata(fp, topics, tmp, databasename);
 	else
-		ft_mainmenu();
+		ft_exit();
 }
 
 char	*ft_createnameline(t_ftdb create, int topics, FILE *fp, char *dbname)
@@ -50,12 +51,13 @@ char	*ft_createnameline(t_ftdb create, int topics, FILE *fp, char *dbname)
 	topiccreated = 1;
 	while (topiccreated <= topics)
 	{
-		printf("\n[Database:%31s]\n", dbname);
-		printf("Enter [Name] of topics %d of %d\n", topiccreated, topics);
+		printf("\n[Database:%s%31s%s]\n", YELLOW, dbname, RESET);
+		printf("Enter [%sName of Topics%s] %d of %d\n",
+			CYAN, RESET, topiccreated, topics);
 		ft_get_next_line(0, &line);
-		printf("Enter type of data:\n[%40s]\n", "string");
-		printf("[(whole numbers)%25s]\n[(numbers and decimals)%18s]\n\n",
-			"int", "float");
+		printf("Enter type of data:\n[%s%40s%s]\n", GREEN, "string", RESET);
+		printf("[(whole numbers)%s%25s%s]\n[(numbers and decimals)%s%18s%s]\n\n",
+			GREEN, "int", RESET, GREEN, "float", RESET);
 		scanf("%s", create.data);
 		ft_topicnames(create.addline, line);
 		ft_datatype(create.addline, create.data, topiccreated, topics);
@@ -79,7 +81,8 @@ FILE	*ft_open(char *str)
 	size = ftell(fp);
 	if (size > 0)
 	{
-		printf("\nDatabase Name [exists], Please choose another\n\n");
+		printf("\n%sDatabase Name [exists], Choose another%s\n\n",
+			RED, RESET);
 		ft_create();
 	}
 	rewind(fp);
@@ -96,11 +99,11 @@ void	ft_create(void)
 	t_ftdb		create;
 	
 	i = 1;
-	printf("\nEnter New Database Name[30 letter max]:\n\n");
+	printf("\nEnter New %sDatabase Name%s   [30 letter max]:\n\n", MAGENTA, RESET);
 	scanf("%s", create.name);
 	fp = ft_open(create.name);
-	printf("[Database Named:%25s]\n", create.name);
-	printf("Enter Number of topics: 1-10\n");
+	printf("[Database Named:%s%25s%s]\n", YELLOW, create.name, RESET);
+	printf("Enter Number of topics: %s1-10%s\n", GREEN, RESET);
 	scanf("%s", create.str);
 	fprintf(fp, "%s\n", create.str);
 	topics = atoi(create.str);
@@ -112,6 +115,4 @@ void	ft_create(void)
 	ft_adddata(fp, topics, tmp, create.name);
 	free (tmp);
 	tmp = NULL;
-	printf("[%40s]\n", "Database Entry Finished");
-	exit(0);
 }

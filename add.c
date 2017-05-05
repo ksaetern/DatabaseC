@@ -25,40 +25,20 @@ void				ft_openapend(char *str)
 	sprintf(filepath, "./Database/%s", str);
 	if(!(fp = fopen (filepath, "r+")))
 	{
-		printf("\n[%40s]\n", "Database name error");
+		printf("\n%s[%40s]\n", RED, "Database name error");
 		ft_add();
 	}
 	fscanf(fp, "%c %s", create.str, create.addline);
 	topics = atoi(create.str);
 	if (topics == 0)
 	{
-		printf("\n[%40s]\n\n", "Format [error] choose another file");
+		printf("\n%s[%40s]\n\n",
+		RED, "Format [error] choose another file");
 		ft_add();
 	}
-	printf("[Number of topics:%23d]\n", topics);
+	printf("[Number of topics:%s%23d%s]\n", CYAN, topics, RESET);
 	tmp = ft_strsplit(create.addline, ',');
 	ft_adddata(fp, topics, tmp, str);
-}
-
-void 		list_dir(const char *path)
-{
-    struct dirent 	*entry;
-
-    DIR *dir = opendir(path);
-    if (dir == NULL)
-    {
-    	printf("\n[%40s]\n\n", "Database doesn't exist please go to Create");
-        ft_mainmenu();
-    }
-    printf("\nExisting Database:\n");
-    while ((entry = readdir(dir)) != NULL)
-    {
-    	if (!strcmp(entry->d_name, ".") || !strcmp(entry->d_name, ".."))
-    		;
-    	else
-    		printf("[%40s]\n",entry->d_name);
-    }
-    closedir(dir);
 }
 
 void 				ft_add(void)
@@ -67,13 +47,14 @@ void 				ft_add(void)
 
 	line = NULL;
 	list_dir("./Database/");
-	printf("\nPlease choose database [name] or [exit]\n");
+	printf("\n%sPlease choose database    [name] or [%sexit%s]%s\n",
+		GREEN, RED, GREEN, RESET);
 	ft_get_next_line(0, &line);
 	if(strcmp(line, "exit") == 0)
 	{
 		free(line);
 		line = NULL;
-		exit (0);
+		ft_exit();
 	}
 	ft_openapend(line);
 }

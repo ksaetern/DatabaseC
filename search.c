@@ -12,14 +12,6 @@
 
 #include "ftdb.h"
 
-t_topic		*ft_newlist(t_topic *newlist)
-{
-	if (!(newlist->next = (t_topic *)malloc(sizeof(t_topic))))
-		return (0);
-	newlist = newlist->next;
-	return (newlist);
-}
-
 void	ft_printstruct(t_topic *dbhead)
 {
 	t_topic		*database;
@@ -31,9 +23,8 @@ void	ft_printstruct(t_topic *dbhead)
 	exit (0);
 }
 
-void	ft_makestruct(char **topicnames, int topics, FILE *fp, int i)
+void	ft_makestruct(t_ftdb *create, int fd)
 {
-	t_ftdb		create;
 	t_topic		*dbhead;
 	t_topic		*database;
 	char		**topicdata;
@@ -41,13 +32,12 @@ void	ft_makestruct(char **topicnames, int topics, FILE *fp, int i)
 	int			k;
 
 	k = 0;
-	printf("checking topicnames: %s\n", &topicnames[0][0]);
 	dbhead = (t_topic *)malloc(sizeof(t_topic));
 	database = dbhead;
 	rewind(fp);
-	while (ft_get_next_line(fileno(fp), &create.line) && k < 2)
+	while (ft_get_next_line(fd, &create.line) && k < 2)
 		k++;
-	while (ft_get_next_line(fileno(fp), &create.line))
+	while (ft_get_next_line(fd, &create.line))
 	{
 		printf("line to be created: %s\n", create.line);
 		topicdata = ft_strsplit(create.line, ',');
@@ -55,10 +45,12 @@ void	ft_makestruct(char **topicnames, int topics, FILE *fp, int i)
 		while (j < topics)
 		{
 			printf("checking topicnames: %s\n", &topicdata[j][0]);
+			//database = ft_store(database);
 			//database->data[i] = strdup(&topicdata[j][0]);
-			//database->topicname = strdup(topicnames[i]);
+			database->topicname = strdup(topicnames[i]);
 			j++;
-			database = ft_newlist(database);
+			if ((j + 1) != topics)
+				database = ft_newlist(database);
 		}
 		i++;
 	}
@@ -69,30 +61,23 @@ void	ft_makestruct(char **topicnames, int topics, FILE *fp, int i)
 void	ft_parsetopics(char *str)
 {
 	char			filepath[100];
-	int				topics;
 	int				i;
 	FILE			*fp;
 	char			**topicnames;
-	t_ftdb			create;
+	t_ftdb			*create;
 	
 	i = 0;
+	create = (t_ftdb *)malloc(sizeof(t_ftdb));
+	topicnames = NULL;
 	sprintf(filepath, "./Database/%s", str);
 	if(!(fp = fopen (filepath, "r+")))
 	{
 		printf("\n[%40s]\n", "Database name error");
 		ft_search();
 	}
-	fscanf(fp, "%c %s", create.str, create.addline);
-	topics = atoi(create.str);
-	if (topics == 0)
-	{
-		printf("\n[%40s]\n\n", "Format [error] choose another file");
-		ft_search();
-	}
-	printf("[Number of topics:%23d]\n", topics);
-	printf("topics = %s\n", create.addline);
-	topicnames = ft_strsplit(create.addline, ',');
-	ft_makestruct(topicnames, topics, fp, i);
+	create = ft_grabinfo(create, fileno(fp), topicnames);
+	fp = fopen (filepath, "r+"
+	ft_makestruct(create, fileno(fp));
 }
 
 void	ft_search(void)

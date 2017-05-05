@@ -19,20 +19,20 @@ void	ft_destroyfinal(char *str)
 	int				rem;
 
 	sprintf(filepath, "./Database/%s", str);
-	printf("%s[%s]?\n", "Are you sure you want to destroy:", str);
-	printf("[%40s]\n[%40s]\n", "yes", "no");
+	printf("[Are you sure you want to %sDestroy%s:%s%s%s]?\n",
+		RED, RESET, MAGENTA, str, RESET);
+	printf("%s[%40s]\n%s[%40s]\n", RED, "yes", GREEN, "no");
 	ft_get_next_line(0, &line);
-
 	if(strcmp(line, "yes") == 0)
 	{
 		rem = remove(filepath);
 		if(rem == 0) 
 		{
 			list_dir("./Database/");
-			printf("\n[%40s]\n\n", "Database destroyed successfully");
+			printf("\n%s[%40s]\n\n", RED, "Database destroyed successfully");
 		}
 		else 
-			printf("\n[%40s]\n", "Error: unable to destroy the Database");
+			printf("\n%s[%40s]\n", RED, "Error: unable to destroy the Database");
 	}
 	ft_mainmenu();
 }
@@ -43,14 +43,15 @@ void	ft_destroy(void)
 
 	line = NULL;
 	list_dir("./Database/");
-	printf("\nPlease choose database [name] or [exit]\n");
+	printf("\nPlease choose database [%sname%s] or [exit]\n",
+		MAGENTA, RESET);
 	ft_get_next_line(0, &line);
 	if(strcmp(line, "exit") == 0)
 	{
 
 		free(line);
 		line = NULL;
-		exit (0);
+		ft_exit();
 	}
 	ft_destroyfinal(line);
 }

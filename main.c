@@ -12,19 +12,13 @@
 
 #include "ftdb.h"
 
-void	ft_error(void)
-{
-	printf("User error\n");
-	exit (0);
-}
-
 void	ft_createdirectory(void)
 {
 	if (mkdir("Database",0777) == 0)
-		printf("\nDatabase directory created\n");
+		printf("\n%sDatabase directory created%s\n", GREEN, RESET);
 	else if (mkdir("Database",0777) == -1)
 	{
-		printf("\nDatabase directory exits\n");
+		printf("\n%sDatabase directory exits%s\n", BLUE, RESET);
 		list_dir("./Database/");
 	}
 	ft_create();
@@ -34,9 +28,10 @@ void	ft_mainmenu(void)
 {
 	char		c[2];
 
-	printf("Would you like to:\n");
-	printf("\n[%40s]\n[%40s]\n[%40s]\n[%40s]\n[%40s]\n\n",
-		"Create:(1)", "Add:(2)", "Search:(3)", "Destroy:(4)", "Exit:(5)");
+	printf("%sWould you like to:\n", WHITE);
+	printf("\n%s[%40s]\n[%40s]\n[%40s]\n[%40s]\n[%40s]%s\n\n",
+		GREEN, "Create:(1)", "Add:(2)", "Search:(3)",
+		 "Destroy:(4)", "Exit:(5)", RESET);
 	scanf("%s", c);
 	if (strcmp(c, CREATE) == 0)
 		ft_createdirectory();
@@ -47,10 +42,10 @@ void	ft_mainmenu(void)
 	else if (strcmp(c, DESTROY) == 0)
 		ft_destroy();
 	else if (strcmp(c, EXIT) == 0)
-		exit(0);
+		ft_exit();
 	else
 	{
-		printf("bro follow directions\n");
+		printf("%sBro follow directions\n", RED);
 		ft_mainmenu();
 	}
 }
@@ -65,17 +60,18 @@ void	password_input()
 	scanf("%s", password);
 	if (strcmp(pass, password) == 0)
 	{
-		printf("Password Confirmed\n");
+		printf("%sPassword Confirmed%s\n", GREEN, RESET);
 		ft_mainmenu();
 	}
 	else
-		printf("Back off Witch!\n");
+		printf("%sBack off Witch!%s\n", RED, RESET);
 }
 
 int		main(void)
 {
-	printf("\n[%40s]\n[%40s]\n\n", "Welcome to the FT_Database",
-		"Please enter password(hint:welcome42)");
+	ft_name();
+	printf("\n%s[%40s]\n%s[%40s]%s\n\n", GREEN, "Welcome to the Database",
+		WHITE, "Please enter password(hint:welcome42)", RESET);
 	password_input();
 	return (0);
 }
