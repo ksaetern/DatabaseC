@@ -22,6 +22,7 @@ SRCS	= 	main.c \
 			add.c \
 			search.c \
 			searchstore.c \
+			searchmenu.c \
 			destroy.c \
 			utility.c \
 

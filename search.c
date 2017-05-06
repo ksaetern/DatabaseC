@@ -12,50 +12,31 @@
 
 #include "ftdb.h"
 
-void	ft_printstruct(t_topic *dbhead)
+t_ftdb		*ft_grabinfo(t_ftdb *create, int fd)
 {
-	t_topic		*database;
-	int			i;
+	int		data;
 
-	i = 0;
-	database = dbhead;
-	printf("topicname%s\ndata%s\n", database->topicname, database->data[i]);
-	exit (0);
-}
-
-void	ft_makestruct(t_ftdb *create, int fd)
-{
-	t_topic		*dbhead;
-	t_topic		*database;
-	char		**topicdata;
-	int			j;
-	int			k;
-
-	k = 0;
-	dbhead = (t_topic *)malloc(sizeof(t_topic));
-	database = dbhead;
-	rewind(fp);
-	while (ft_get_next_line(fd, &create.line) && k < 2)
-		k++;
-	while (ft_get_next_line(fd, &create.line))
+	data = 0;
+	if (ft_get_next_line(fd, &create->line))
+		create->topics = atoi(create->line);
+	free(create->line);
+	if (create->topics == 0)
 	{
-		printf("line to be created: %s\n", create.line);
-		topicdata = ft_strsplit(create.line, ',');
-		j = 0;
-		while (j < topics)
-		{
-			printf("checking topicnames: %s\n", &topicdata[j][0]);
-			//database = ft_store(database);
-			//database->data[i] = strdup(&topicdata[j][0]);
-			database->topicname = strdup(topicnames[i]);
-			j++;
-			if ((j + 1) != topics)
-				database = ft_newlist(database);
-		}
-		i++;
+		printf("\n[%40s]\n\n", "Format [error] choose another file");
+		ft_search();
 	}
-	database->next = NULL;
-	ft_printstruct(dbhead);
+	if (ft_get_next_line(fd, &create->line))
+		create->topicnames = ft_strsplit(create->line, ',');
+	free(create->line);
+	while (ft_get_next_line(fd, &create->line))
+	{
+		data++;
+		free(create->line);
+	}
+	create->dataentry = data;
+	create->line = NULL;
+	close(fd);
+	return (create);
 }
 
 void	ft_parsetopics(char *str)
@@ -63,21 +44,24 @@ void	ft_parsetopics(char *str)
 	char			filepath[100];
 	int				i;
 	FILE			*fp;
-	char			**topicnames;
 	t_ftdb			*create;
 	
 	i = 0;
 	create = (t_ftdb *)malloc(sizeof(t_ftdb));
-	topicnames = NULL;
 	sprintf(filepath, "./Database/%s", str);
 	if(!(fp = fopen (filepath, "r+")))
 	{
 		printf("\n[%40s]\n", "Database name error");
 		ft_search();
 	}
-	create = ft_grabinfo(create, fileno(fp), topicnames);
-	fp = fopen (filepath, "r+"
-	ft_makestruct(create, fileno(fp));
+	create = ft_grabinfo(create, fileno(fp));
+	create->databasename = str;
+	printf("\n%s[Datasebase info:%24s]\n", YELLOW, create->databasename);
+	printf("%s[Number of topics:%23d]\n", CYAN, create->topics);
+	printf("%s[Number of data entry:%19d]%s\n\n",
+		 GREEN, create->dataentry, RESET);
+	fp = fopen (filepath, "r+");
+	ft_makestruct(create, fileno(fp), i);
 }
 
 void	ft_search(void)
@@ -86,7 +70,7 @@ void	ft_search(void)
 
 	line = NULL;
 	list_dir("./Database/");
-	printf("\nPlease choose database [name] or [exit]\n");
+	printf("\nPlease choose database [name] or [exit]%s\n", MAGENTA);
 	ft_get_next_line(0, &line);
 	if(strcmp(line, "exit") == 0)
 	{

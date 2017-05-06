@@ -34,6 +34,7 @@ void	ft_destroyfinal(char *str)
 		else 
 			printf("\n%s[%40s]\n", RED, "Error: unable to destroy the Database");
 	}
+	free(line);
 	ft_mainmenu();
 }
 

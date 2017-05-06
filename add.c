@@ -12,6 +12,50 @@
 
 #include "ftdb.h"
 
+void	ft_addmenu(FILE *fp, int topics, char **tmp, char *databasename)
+{
+	char	*choose;
+
+	ft_get_next_line(0, &choose);
+	if (strcmp(choose, "yes") == 0)
+		ft_adddata(fp, topics, tmp, databasename);
+	if (strcmp(choose, "menu") == 0)
+		ft_mainmenu();
+	if (strcmp(choose, "exit") == 0)
+		ft_exit();
+	else
+		ft_error();
+}
+
+void	ft_adddata(FILE *fp, int topics, char **tmp, char *databasename)
+{
+	int 		topiccreated;
+	int 		j;
+	t_ftdb		create;
+
+	j = 0;
+	topiccreated = 1;
+	ft_bzero(create.addline, 1000);
+	while (topiccreated <= topics)
+	{
+		printf("[Database Name:%s%26s%s]\n", YELLOW, databasename, RESET);
+		printf("[Topic:%s%34s%s]\n[%40s]\n", CYAN, &tmp[j][0], RESET,
+		 "Enter data for topic:");
+		ft_get_next_line(0, &create.line);
+		if (strchr(create.line, ','))
+			ft_forbidadd(fp, topics, tmp, databasename);
+		ft_csvformat(create.addline, create.line, topiccreated, topics);
+		j++;
+		topiccreated++;
+	}
+	fprintf(fp, "%s\n",	create.addline);
+	printf("%sWould you like to to enter more data?%s\n",
+		GREEN, RESET);
+	printf("[%s%40s%s]\n[%s%40s%s]\n[%s%40s%s]\n", GREEN, "yes",
+		RESET, WHITE, "menu", RESET, RED,"exit", RESET);
+	ft_addmenu(fp, topics, tmp, databasename);
+}
+
 void				ft_openapend(char *str)
 {
 	char			filepath[100];

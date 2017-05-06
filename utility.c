@@ -34,6 +34,18 @@ void 		list_dir(const char *path)
 	closedir(dir);
 }
 
+void	ft_forbidc(void)
+{
+	printf("[%s%40s%s]\n", RED, "Forbidden character found", RESET);
+	ft_create();
+}
+
+void	ft_forbidadd(FILE *fp, int topics, char **tmp, char *databasename)
+{
+	printf("[%s%40s%s]\n", RED, "Forbidden character ',' found", RESET);
+	ft_adddata(fp, topics, tmp, databasename);
+}
+
 void	ft_error(void)
 {
 	printf("%s%40s\n", RED, "User Error");
@@ -44,15 +56,52 @@ void	ft_exit(void)
 {
 	printf("[%s%40s%s]\n", RED, "Program Exiting", RESET);
 	printf("[%s%40s%s]\n", GREEN, "GoodBye", RESET);
-	exit(0);
+	exit (0);
 }
 
-t_topic		*ft_newlist(t_topic *newlist)
+char	*ft_newstr(char *str)
 {
-	if (!(newlist->next = (t_topic *)malloc(sizeof(t_topic))))
+	char	*split;
+	int		i = 0;
+	int		k = 0;
+
+	while (str[i] != '\t' && str[i] != ' ' && str[i] != '\n')
+		i++;
+	split = (char *)malloc(sizeof(char) * (i + 1));
+	while (k < i)
+	{
+		split[k] = str[k];
+		k++;
+	}
+	split[k] = '\0';
+	return (split);
+}
+
+t_topic		*ft_newlist(int topicscount, int dataentry)
+{
+	int 		i;
+	t_topic		*dbhead;
+	t_topic		*newlist;
+
+	i = 1;
+	//printf("struct count = %d\n", topicscount);
+	if (!(dbhead = (t_topic *)malloc(sizeof(t_topic))))
 		return (0);
-	newlist = newlist->next;
-	return (newlist);
+	newlist = dbhead;
+	printf("dataentry = %d\n", dataentry);
+	while (i < topicscount)
+	{
+		if (!(newlist->data = (char **)malloc(sizeof(char *) * (dataentry + 1))))
+			return (0);
+		newlist->data[dataentry] = NULL;
+		if (!(newlist->next = (t_topic *)malloc(sizeof(t_topic))))
+			return (0);
+		i++;
+		newlist = newlist->next;
+	}
+	//printf("i = %d\n", i);
+	newlist->next = NULL;
+	return (dbhead);
 }
 
 void	ft_name(void)

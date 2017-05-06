@@ -50,20 +50,22 @@ typedef	struct  	s_ftdb
 	char			data[100];
 	char			str[10];
 	FILE			*fp;
+	char			*databasename;
 	char			*line;
-	char			*topicnames;
+	char			*topicname;
+	char			**topicnames;
 	char			addline[1000];
 }					t_ftdb;
 
 typedef struct   	s_topic
 {
-	char			*topicname;
-	char			topictype[20];
+	int				dataentry;
+	char			topicname[30];
+	char			*databasename;
 	char			**data;
 	struct s_topic	*next;
 }					t_topic;
 
-int					main(void);
 void				ft_error(void);
 void				ft_create(void);
 void				ft_createdirectory(void);
@@ -75,10 +77,18 @@ void				ft_exit(void);
 void				ft_error(void);
 void 				list_dir(const char *path);
 void				ft_name(void);
-t_ftdb				*ft_grabinfo(t_ftdb *create, int fd, char **topicnames);
+void				ft_forbidc(void);
+void				ft_printtopic(char ***entry, t_ftdb *create);
+void				ft_searchmenu2(char *choose, t_ftdb *create, char ***entry);
+void				ft_forbidadd(FILE *fp, int topics, char **tmp, char *databasename);
+void				ft_searchmenu(t_topic *dbhead);
+void				ft_searcherror(t_topic *dbhead);
+char				*ft_newstr(char *str);
+void				ft_makestruct(t_ftdb *create, int fd, int k);
+t_topic				*ft_newlist(int topicscount, int dataentry);
+t_ftdb				*ft_grabinfo(t_ftdb *create, int fd);
 void				ft_adddata(FILE *fp, int topics, char **tmp, char *databasename);
 FILE				*ft_open(char *str);
-t_topic				*ft_newlist(t_topic *newlist);
 void				ft_datatype(char *s1, char *s2, int topiccreated, int topics);
 void				ft_topicnames(char *s1, char *s2);
 void				ft_csvformat(char *s1, char *s2, int topiccreated, int topics);

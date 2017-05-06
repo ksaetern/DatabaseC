@@ -12,36 +12,6 @@
 
 #include "ftdb.h"
 
-void	ft_adddata(FILE *fp, int topics, char **tmp, char *databasename)
-{
-	int 		topiccreated;
-	int 		j;
-	t_ftdb		create;
-
-	j = 0;
-	topiccreated = 1;
-	ft_bzero(create.addline, 1000);
-	while (topiccreated <= topics)
-	{
-		printf("[Database Name:%s%26s%s]\n", YELLOW, databasename, RESET);
-		printf("[Topic:%s%34s%s]\n[%40s]\n", CYAN, &tmp[j][0], RESET,
-		 "Enter data for topic:");
-		ft_get_next_line(0, &create.line);
-		ft_csvformat(create.addline, create.line, topiccreated, topics);
-		j++;
-		topiccreated++;
-	}
-	fprintf(fp, "%s\n",	create.addline);
-	printf("%sWould you like to to enter more data?%s\n",
-		GREEN, RESET);
-	printf("[%40s]\n[%40s]\n", "yes","no");
-	scanf("%s", create.name);
-	if (strcmp(create.name, YES) == 0)
-		ft_adddata(fp, topics, tmp, databasename);
-	else
-		ft_exit();
-}
-
 char	*ft_createnameline(t_ftdb create, int topics, FILE *fp, char *dbname)
 {
 	int 			topiccreated;
@@ -64,8 +34,8 @@ char	*ft_createnameline(t_ftdb create, int topics, FILE *fp, char *dbname)
 		topiccreated++;
 	}
 	fprintf(fp, "%s\n",	create.addline);
-	create.topicnames = create.addline;
-	return (create.topicnames);
+	create.topicname = create.addline;
+	return (create.topicname);
 }
 
 FILE	*ft_open(char *str)
@@ -87,7 +57,20 @@ FILE	*ft_open(char *str)
 	}
 	rewind(fp);
 	return (fp);
+}
 
+int		ft_createuserpicks(void)
+{
+	char	*choose;
+	int		topics;
+
+	ft_get_next_line(0, &choose);
+	if (strcmp(choose, "exit") == 0)
+		ft_exit();
+	topics = atoi(choose);
+	if (topics == 0 || topics > 100)
+		ft_error();
+	return (topics);	
 }
 
 void	ft_create(void)
@@ -103,14 +86,13 @@ void	ft_create(void)
 	scanf("%s", create.name);
 	fp = ft_open(create.name);
 	printf("[Database Named:%s%25s%s]\n", YELLOW, create.name, RESET);
-	printf("Enter Number of topics: %s1-10%s\n", GREEN, RESET);
-	scanf("%s", create.str);
-	fprintf(fp, "%s\n", create.str);
+	printf("Enter Number of topics: %s1-100%s or    [%sexit%s]\n",
+		 GREEN, RESET, RED, RESET);
 	topics = atoi(create.str);
-	if (topics == 0)
-		ft_error();
-	create.topicnames = ft_createnameline(create, topics, fp, create.name);
-	tmp = ft_strsplit(create.topicnames, ',');
+	topics = ft_createuserpicks();
+	fprintf(fp, "%s\n", (ft_itoa(topics)));
+	create.topicname = ft_createnameline(create, topics, fp, create.name);
+	tmp = ft_strsplit(create.topicname, ',');
 	printf("%d topics created\n", topics);
 	ft_adddata(fp, topics, tmp, create.name);
 	free (tmp);
