@@ -14,7 +14,6 @@
 
 void	ft_datatype(char *s1, char *s2, int topiccreated, int topics)
 {
-	/*skips to end of element name, adds a * then datatype*/
 	int i;
 	int	j;
 
@@ -36,14 +35,14 @@ void	ft_datatype(char *s1, char *s2, int topiccreated, int topics)
 
 void	ft_topicnames(char *s1, char *s2)
 {
-	/*add each element name*/
 	int i;
 	int	j;
 
 	j = 0;
 	i = 0;
-	while((ft_isalnum(s1[j]) || s1[j] == ',' || s1[j] == '*' || ft_wspace_check(s1[j])))
-			j++;
+	while ((ft_isalnum(s1[j]) || s1[j] == ',' || s1[j] == '*' ||
+		ft_wspace_check(s1[j])))
+		j++;
 	while (s2[i] != '\0')
 	{
 		s1[j] = s2[i];
@@ -54,14 +53,13 @@ void	ft_topicnames(char *s1, char *s2)
 
 void	ft_csvformat(char *s1, char *s2, int topiccreated, int topics)
 {
-	/*adds value then a comma after each value*/
 	int i;
 	int	j;
 
 	j = 0;
 	i = 0;
-	while((ft_isalnum(s1[j]) || s1[j] == ',' || ft_wspace_check(s1[j])))
-			j++;
+	while ((ft_isalnum(s1[j]) || s1[j] == ',' || ft_wspace_check(s1[j])))
+		j++;
 	while (s2[i] != '\0' && s2[i] != '\n')
 	{
 		s1[j] = s2[i];

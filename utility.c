@@ -3,20 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   utility.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksaetern <ksaetern@student.42.us.org       +#+  +:+       +#+        */
+/*   By: ksaetern <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/05/04 17:31:31 by ksaetern          #+#    #+#             */
-/*   Updated: 2017/05/04 17:31:32 by ksaetern         ###   ########.fr       */
+/*   Created: 2016/12/15 08:21:49 by ksaetern          #+#    #+#             */
+/*   Updated: 2017/01/21 07:02:47 by ksaetern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ftdb.h"
 
-void 		list_dir(const char *path)
+void	list_dir(const char *path)
 {
-	struct dirent 	*entry;
+	struct dirent	*entry;
+	DIR				*dir;
 
-	DIR *dir = opendir(path);
+	dir = opendir(path);
 	if (dir == NULL)
 	{
 		printf("\n%s[%40s]%s\n\n",
@@ -34,10 +35,13 @@ void 		list_dir(const char *path)
 	closedir(dir);
 }
 
-void	ft_forbidc(void)
+void	ft_forbidc(char *line)
 {
-	printf("[%s%40s%s]\n", RED, "Forbidden character found", RESET);
-	ft_create();
+	if (strchr(line, ','))
+	{
+		printf("[%s%40s%s]\n", RED, "Forbidden character found", RESET);
+		ft_create();
+	}
 }
 
 void	ft_forbidadd(FILE *fp, int topics, char **tmp, char *databasename)
@@ -49,69 +53,12 @@ void	ft_forbidadd(FILE *fp, int topics, char **tmp, char *databasename)
 void	ft_error(void)
 {
 	printf("%s%40s\n", RED, "User Error");
-	exit (0);
+	ft_mainmenu();
 }
 
 void	ft_exit(void)
 {
 	printf("[%s%40s%s]\n", RED, "Program Exiting", RESET);
 	printf("[%s%40s%s]\n", GREEN, "GoodBye", RESET);
-	exit (0);
-}
-
-char	*ft_newstr(char *str)
-{
-	char	*split;
-	int		i = 0;
-	int		k = 0;
-
-	while (str[i] != '\t' && str[i] != ' ' && str[i] != '\n')
-		i++;
-	split = (char *)malloc(sizeof(char) * (i + 1));
-	while (k < i)
-	{
-		split[k] = str[k];
-		k++;
-	}
-	split[k] = '\0';
-	return (split);
-}
-
-t_topic		*ft_newlist(int topicscount, int dataentry)
-{
-	int 		i;
-	t_topic		*dbhead;
-	t_topic		*newlist;
-
-	i = 1;
-	//printf("struct count = %d\n", topicscount);
-	if (!(dbhead = (t_topic *)malloc(sizeof(t_topic))))
-		return (0);
-	newlist = dbhead;
-	printf("dataentry = %d\n", dataentry);
-	while (i < topicscount)
-	{
-		if (!(newlist->data = (char **)malloc(sizeof(char *) * (dataentry + 1))))
-			return (0);
-		newlist->data[dataentry] = NULL;
-		if (!(newlist->next = (t_topic *)malloc(sizeof(t_topic))))
-			return (0);
-		i++;
-		newlist = newlist->next;
-	}
-	//printf("i = %d\n", i);
-	newlist->next = NULL;
-	return (dbhead);
-}
-
-void	ft_name(void)
-{
-	printf("%s            .-') _   _ .-') _ .-. .-')    \n", RED);
-	printf("            (  OO) ) ( (  OO) )\\  ( OO )    %s\n", RESET);
-	printf("%s   ,------.%s/     '._ \\    .'_ %s;-----.  \n", CYAN, RED, CYAN);
-	printf("('-|  .---'|'--...__.,`'--..._.| .-.  |     \n");
-	printf("(%sOO%s|  |    '--.  .--'|  |  \\  '| '-' /   \n", RED, CYAN);
-	printf("/  |  '--.    |  |   |  |   ' || .-. `.     \n");
-	printf("  \\|  |_)     |  |   |  '--'  /| '--'  /   \n");
-	printf("   `--'       `--'   `-------' `------'     %s\n", RESET);
+	exit(0);
 }

@@ -42,7 +42,7 @@
 # define CYAN  		"\x1B[36m"
 # define WHITE  	"\x1B[37m"
 
-typedef	struct  	s_ftdb
+typedef	struct		s_ftdb
 {
 	int				dataentry;
 	int				topics;
@@ -51,20 +51,13 @@ typedef	struct  	s_ftdb
 	char			str[10];
 	FILE			*fp;
 	char			*databasename;
+	char			*modtopics;
 	char			*line;
+	char			*topic;
 	char			*topicname;
 	char			**topicnames;
 	char			addline[1000];
 }					t_ftdb;
-
-typedef struct   	s_topic
-{
-	int				dataentry;
-	char			topicname[30];
-	char			*databasename;
-	char			**data;
-	struct s_topic	*next;
-}					t_topic;
 
 void				ft_error(void);
 void				ft_create(void);
@@ -75,22 +68,25 @@ void				ft_destroy(void);
 void				ft_search(void);
 void				ft_exit(void);
 void				ft_error(void);
-void 				list_dir(const char *path);
+void				list_dir(const char *path);
 void				ft_name(void);
-void				ft_forbidc(void);
+void				ft_forbidc(char *line);
+void				ft_modify(int line, t_ftdb *create, char ***entry);
 void				ft_printtopic(char ***entry, t_ftdb *create);
-void				ft_searchmenu2(char *choose, t_ftdb *create, char ***entry);
-void				ft_forbidadd(FILE *fp, int topics, char **tmp, char *databasename);
-void				ft_searchmenu(t_topic *dbhead);
-void				ft_searcherror(t_topic *dbhead);
+void				ft_searchmenu(char *choose, t_ftdb *create,
+						char ***entry, int line);
+void				ft_forbidadd(FILE *fp, int topics, char **tmp,
+						char *databasename);
 char				*ft_newstr(char *str);
-void				ft_makestruct(t_ftdb *create, int fd, int k);
-t_topic				*ft_newlist(int topicscount, int dataentry);
+void				ft_makesinfo(t_ftdb *create, int fd, int k);
 t_ftdb				*ft_grabinfo(t_ftdb *create, int fd);
-void				ft_adddata(FILE *fp, int topics, char **tmp, char *databasename);
+void				ft_adddata(FILE *fp, int topics, char **tmp,
+						char *databasename);
 FILE				*ft_open(char *str);
-void				ft_datatype(char *s1, char *s2, int topiccreated, int topics);
+void				ft_datatype(char *s1, char *s2, int topiccreated,
+						int topics);
 void				ft_topicnames(char *s1, char *s2);
-void				ft_csvformat(char *s1, char *s2, int topiccreated, int topics);
+void				ft_csvformat(char *s1, char *s2, int topiccreated,
+						int topics);
 
 #endif

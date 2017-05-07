@@ -12,11 +12,23 @@
 
 #include "ftdb.h"
 
+void		ft_name(void)
+{
+	printf("%s            .-') _   _ .-') _ .-. .-')    \n", RED);
+	printf("            (  OO) ) ( (  OO) )\\  ( OO )    %s\n", RESET);
+	printf("%s   ,------.%s/     '._ \\    .'_ %s;-----.  \n", CYAN, RED, CYAN);
+	printf("('-|  .---'|'--...__.,`'--..._.| .-.  |     \n");
+	printf("(%sOO%s|  |    '--.  .--'|  |  \\  '| '-' /   \n", RED, CYAN);
+	printf("/  |  '--.    |  |   |  |   ' || .-. `.     \n");
+	printf("  \\|  |_)     |  |   |  '--'  /| '--'  /   \n");
+	printf("   `--'       `--'   `-------' `------'     %s\n", RESET);
+}
+
 void	ft_createdirectory(void)
 {
-	if (mkdir("Database",0777) == 0)
+	if (mkdir("Database", 0777) == 0)
 		printf("\n%sDatabase directory created%s\n", GREEN, RESET);
-	else if (mkdir("Database",0777) == -1)
+	else if (mkdir("Database", 0777) == -1)
 	{
 		printf("\n%sDatabase directory exits%s\n", BLUE, RESET);
 		list_dir("./Database/");
@@ -31,7 +43,7 @@ void	ft_mainmenu(void)
 	printf("%sWould you like to:\n", WHITE);
 	printf("\n%s[%40s]\n[%40s]\n[%40s]\n[%40s]\n[%40s]%s\n\n",
 		GREEN, "Create:(1)", "Add:(2)", "Search:(3)",
-		 "Destroy:(4)", "Exit:(5)", RESET);
+		"Destroy:(4)", "Exit:(5)", RESET);
 	scanf("%s", c);
 	if (strcmp(c, CREATE) == 0)
 		ft_createdirectory();
@@ -50,7 +62,7 @@ void	ft_mainmenu(void)
 	}
 }
 
-void	password_input()
+void	password_input(void)
 {
 	char		password[12];
 	const char	pass[12] = "welcome42";

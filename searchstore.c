@@ -12,13 +12,13 @@
 
 #include "ftdb.h"
 
-void	ft_printline(int line, t_ftdb *create, char ***entry)
+void		ft_printline(int line, t_ftdb *create, char ***entry)
 {
-	int i;
+	int		i;
 
 	i = 0;
-	printf("[Database Name:%s%26s%s]\n\n",
-		YELLOW, create->databasename, RESET);
+	printf("[Database Name:%s%26s%s]\n%sLine [%d] info:%s\n", YELLOW,
+		create->databasename, RESET, MAGENTA, line, RESET);
 	while (i < create->topics)
 	{
 		printf("[Topic:%s%34s%s]\n", CYAN, create->topicnames[i], RESET);
@@ -26,15 +26,16 @@ void	ft_printline(int line, t_ftdb *create, char ***entry)
 		i++;
 	}
 	printf("\n%sChoose:%s\n", GREEN, RESET);
-	printf("[%s%40s%s]\n[%s%40s%s]\n[%s%40s%s]\n", GREEN, "topics",
-		RESET, WHITE, "menu", RESET, RED,"exit", RESET);
+	printf("[%s%40s%s]\n[%s%40s%s]\n[%s%40s%s]\n[%s%40s%s]\n",
+		GREEN, "modify", RESET, GREEN, "topics",
+		RESET, WHITE, "menu", RESET, RED, "exit", RESET);
 	ft_get_next_line(0, &create->line);
-	ft_searchmenu2(create->line, create, entry);
+	ft_searchmenu(create->line, create, entry, line);
 }
 
-int		ft_userpicks(t_ftdb *create, char *s1)
+int			ft_userpicks(t_ftdb *create, char *s1)
 {
-	int line;
+	int		line;
 
 	printf("\n%sPlease choose Number(#)%s\n", GREEN, RESET);
 	ft_get_next_line(0, &create->line);
@@ -50,40 +51,40 @@ int		ft_userpicks(t_ftdb *create, char *s1)
 			return (line);
 	}
 	ft_error();
-	return(0);
+	return (0);
 }
 
-void	ft_printtopic(char ***entry, t_ftdb *create)
+void		ft_printtopic(char ***entry, t_ftdb *create)
 {
-	int i;
-	int	j;
-	int	line;
+	int		i;
+	int		j;
+	int		line;
 
 	j = 0;
 	i = 0;
 	while (j < create->topics)
-	{	
+	{
 		printf("[%s%37s(%d)%s]\n", CYAN, create->topicnames[j], j, RESET);
 		j++;
 	}
-	line = ft_userpicks(create, "topics");	
+	line = ft_userpicks(create, "topics");
 	printf("[Database Name:%s%26s%s]\n", YELLOW, create->databasename, RESET);
-	printf("[Topic:%s%34s%s]\n%s%s%s\n\n", CYAN, create->topicnames[line], RESET,
-		GREEN,"Data for topic:", RESET);
+	printf("[Topic:%s%34s%s]\n%s%s%s\n\n", CYAN,
+		create->topicnames[line], RESET, GREEN, "Data for topic:", RESET);
 	while (i < create->dataentry)
 	{
-		printf("[%s%37s(%d)%s]\n", GREEN, entry[i][line], i, RESET);		
+		printf("[%s%37s(%d)%s]\n", GREEN, entry[i][line], i, RESET);
 		i++;
 	}
 	line = ft_userpicks(create, "data");
 	ft_printline(line, create, entry);
 }
 
-void	ft_makestruct(t_ftdb *create, int fd, int k)
-{	
-	char		**topicdata;
-	char		***entry;
-	int			i;
+void		ft_makesinfo(t_ftdb *create, int fd, int k)
+{
+	char	**topicdata;
+	char	***entry;
+	int		i;
 
 	i = 0;
 	topicdata = NULL;
@@ -102,6 +103,6 @@ void	ft_makestruct(t_ftdb *create, int fd, int k)
 		free(create->line);
 		i++;
 	}
-	close (fd);
+	close(fd);
 	ft_printtopic(entry, create);
 }
