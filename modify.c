@@ -27,7 +27,9 @@ void			ft_makenewlist(int line, t_ftdb *create, char ***entry)
 	FILE		*fp;
 	int			j;
 	int			i;
+	int			Flagok;
 
+	Flagok = 0;
 	i = 0;
 	fp = ft_mopen(create->databasename);
 	fprintf(fp, "%d\n", (create->topics));
@@ -38,10 +40,16 @@ void			ft_makenewlist(int line, t_ftdb *create, char ***entry)
 		ft_bzero(create->addline, 1000);
 		while (j < create->topics)
 		{
-			ft_csvformat(create->addline, entry[i][j], j, create->topics);
+			if (strcmp(entry[i][j], REMOVE) != 0)
+			{
+				ft_csvformat(create->addline, entry[i][j], j, create->topics);
+				Flagok = 1;
+			}
 			j++;
 		}
-		fprintf(fp, "%s\n", create->addline);
+		if (Flagok == 1)
+			fprintf(fp, "%s\n", create->addline);
+		Flagok = 0;
 		i++;
 	}
 	fclose(fp);
@@ -57,6 +65,20 @@ void			ft_forbidm(int line, t_ftdb *create, char ***entry)
 	ft_modify(line, create, entry);
 }
 
+void			ft_remove(int line, t_ftdb *create, char ***entry)
+{
+	int			i;
+
+	i = 0;
+	printf("in remove\n");
+	while (i < create->topics)
+	{
+		entry[line][i] = strdup(REMOVE);
+		i++;
+	}
+	ft_makenewlist(line, create, entry);
+}
+
 void			ft_modify(int line, t_ftdb *create, char ***entry)
 {
 	int			i;
@@ -67,11 +89,15 @@ void			ft_modify(int line, t_ftdb *create, char ***entry)
 	while (i < create->topics)
 	{
 		printf("[Topic:%s%34s%s]\n", CYAN, create->topicnames[i], RESET);
-		printf("%sEnter modify for line [%d]%s\n", MAGENTA, line, RESET);
+		printf("%sEnter modify for line [%d] or      [%sremove%s]%s\n",
+			MAGENTA, line, RED, MAGENTA, RESET);
 		ft_get_next_line(0, &create->line);
 		if (strchr(create->line, ','))
 			ft_forbidm(line, create, entry);
-		entry[line][i] = strdup(create->line);
+		else if (strcmp(create->line, "remove") == 0)
+			ft_remove(line, create, entry);
+		else
+			entry[line][i] = strdup(create->line);
 		printf("Data change %s%s%s:\n[%s%40s%s]\n\n",
 			CYAN, create->topicnames[i], RESET,
 			GREEN, entry[line][i], RESET);

@@ -26,7 +26,7 @@ void		ft_printline(int line, t_ftdb *create, char ***entry)
 		i++;
 	}
 	printf("\n%sChoose:%s\n", GREEN, RESET);
-	printf("[%s%40s%s]\n[%s%40s%s]\n[%s%40s%s]\n[%s%40s%s]\n",
+	printf("[Edit:%s%35s%s]\n[Back to:%s%32s%s]\n[Back to:%s%32s%s]\n[Byebye:%s%33s%s]\n",
 		GREEN, "modify", RESET, GREEN, "topics",
 		RESET, WHITE, "menu", RESET, RED, "exit", RESET);
 	ft_get_next_line(0, &create->line);

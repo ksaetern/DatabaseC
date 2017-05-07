@@ -31,7 +31,7 @@
 # define EXIT 		"5"
 # define YES 		"yes"
 # define NO 		"no"
-# define REMOVE 	"987456123remove321654789"
+# define REMOVE 	"987456123removeKEY321654789"
 
 # define RESET  	"\x1B[0m"
 # define RED  		"\x1B[31m"

@@ -86,7 +86,8 @@ void		ft_search(void)
 
 	line = NULL;
 	list_dir("./Database/");
-	printf("\nPlease choose database [name] or [exit]%s\n", MAGENTA);
+	printf("\nPlease choose database    [%sname%s] or [%sexit%s]%s\n",
+		MAGENTA, RESET, RED, RESET, MAGENTA);
 	ft_get_next_line(0, &line);
 	if (strcmp(line, "exit") == 0)
 	{
