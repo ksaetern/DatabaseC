@@ -12,6 +12,20 @@
 
 #include "ftdb.h"
 
+void		ft_searchmenu(char *choose, t_ftdb *create, char ***entry, int line)
+{
+	if (strcmp(choose, "modify") == 0)
+		ft_modify(line, create, entry);
+	if (strcmp(choose, "topics") == 0)
+		ft_printtopic(entry, create);
+	if (strcmp(choose, "menu") == 0)
+		ft_mainmenu();
+	if (strcmp(choose, "exit") == 0)
+		ft_exit();
+	else
+		ft_error();
+}
+
 void		ft_printline(int line, t_ftdb *create, char ***entry)
 {
 	int		i;
@@ -40,6 +54,35 @@ int			ft_userpicks(t_ftdb *create, char *s1)
 	printf("\n%sPlease choose Number(#)%s\n", GREEN, RESET);
 	ft_get_next_line(0, &create->line);
 	line = atoi(create->line);
+	free (create->line);
+	if (strcmp(s1, "topics") == 0)
+	{
+		if (line < create->topics)
+			return (line);
+	}
+	else if (strcmp(s1, "data") == 0)
+	{
+		if (line < create->dataentry)
+			return (line);
+	}
+	ft_error();
+	return (0);
+}
+
+int			ft_userpicks2(t_ftdb *create, char *s1, char ***entry)
+{
+	int		line;
+
+	printf("\n%sPlease choose Number (#) or [%ssearch%s]%s\n",
+		GREEN, MAGENTA, GREEN, RESET);
+	ft_get_next_line(0, &create->line);
+	if (strcmp(s1, "data") == 0 && strcmp(create->line, "search") == 0)
+	{
+		free (create->line);
+		ft_searchword(create, entry);
+	}
+	line = atoi(create->line);
+	free (create->line);
 	if (strcmp(s1, "topics") == 0)
 	{
 		if (line < create->topics)
@@ -68,6 +111,7 @@ void		ft_printtopic(char ***entry, t_ftdb *create)
 		j++;
 	}
 	line = ft_userpicks(create, "topics");
+	create->topicchosen = line;
 	printf("[Database Name:%s%26s%s]\n", YELLOW, create->databasename, RESET);
 	printf("[Topic:%s%34s%s]\n%s%s%s\n\n", CYAN,
 		create->topicnames[line], RESET, GREEN, "Data for topic:", RESET);
@@ -76,7 +120,7 @@ void		ft_printtopic(char ***entry, t_ftdb *create)
 		printf("[%s%37s(%d)%s]\n", GREEN, entry[i][line], i, RESET);
 		i++;
 	}
-	line = ft_userpicks(create, "data");
+	line = ft_userpicks2(create, "data", entry);
 	ft_printline(line, create, entry);
 }
 

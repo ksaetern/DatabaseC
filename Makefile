@@ -25,6 +25,7 @@ SRCS	= 	main.c \
 			destroy.c \
 			utility.c \
 			modify.c \
+			searchall.c
 
 OBJ =		${SRCS:.c=.o}
 

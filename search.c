@@ -12,20 +12,6 @@
 
 #include "ftdb.h"
 
-void		ft_searchmenu(char *choose, t_ftdb *create, char ***entry, int line)
-{
-	if (strcmp(choose, "modify") == 0)
-		ft_modify(line, create, entry);
-	if (strcmp(choose, "topics") == 0)
-		ft_printtopic(entry, create);
-	if (strcmp(choose, "menu") == 0)
-		ft_mainmenu();
-	if (strcmp(choose, "exit") == 0)
-		ft_exit();
-	else
-		ft_error();
-}
-
 t_ftdb		*ft_grabinfo(t_ftdb *create, int fd)
 {
 	int		data;

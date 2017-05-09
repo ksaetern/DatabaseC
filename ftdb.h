@@ -46,6 +46,7 @@ typedef	struct		s_ftdb
 {
 	int				dataentry;
 	int				topics;
+	int				topicchosen;
 	char			name[100];
 	char			data[100];
 	char			str[10];
@@ -71,6 +72,8 @@ void				ft_error(void);
 void				list_dir(const char *path);
 void				ft_name(void);
 void				ft_forbidc(char *line);
+void				ft_printline(int line, t_ftdb *create, char ***entry);
+void				ft_searchword(t_ftdb *create, char ***entry);
 void				ft_modify(int line, t_ftdb *create, char ***entry);
 void				ft_printtopic(char ***entry, t_ftdb *create);
 void				ft_searchmenu(char *choose, t_ftdb *create,
