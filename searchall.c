@@ -17,10 +17,13 @@ int			ft_userpicks3(t_ftdb *create)
 	int		line;
 
 	ft_get_next_line(0, &create->line);
-	line = atoi(create->line);
-	free (create->line);
-	if (line < create->dataentry)
+	if (ft_isdigit(create->line[0]))
+	{
+		line = atoi(create->line);
+		free (create->line);
+		if (line < create->dataentry)
 			return (line);
+	}
 	ft_error();
 	return (0);
 }
@@ -40,7 +43,7 @@ void	ft_searchtopic(t_ftdb *create, char ***entry)
 	ft_get_next_line(0, &create->line);
 	while (i < create->dataentry)
 	{
-		if (strcmp(create->line , entry[i][create->topicchosen]) == 0)
+		if (ft_strstr(entry[i][create->topicchosen], create->line))
 		{
 			count++;
 			printf("[%s%37s(%d)%s]\n", GREEN, entry[i][create->topicchosen], i, RESET);
@@ -61,13 +64,14 @@ void	ft_searchtopic(t_ftdb *create, char ***entry)
 
 void	ft_searchword(t_ftdb *create, char ***entry)
 {
-	printf("Search current [topic] or search [*doesnt work*all]\n");
-	ft_get_next_line(0, &create->line);
+	printf("Search current [topic]\n");
+	ft_searchtopic(create, entry);
+	/*ft_get_next_line(0, &create->line);
 	if (strcmp(create->line, "topic") == 0)
 	{
 		ft_searchtopic(create, entry);
 	}
-	/*else if (strcmp(create->line, "all") == 0)
+	else if (strcmp(create->line, "all") == 0)
 	{
 
 	}

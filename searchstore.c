@@ -53,17 +53,20 @@ int			ft_userpicks(t_ftdb *create, char *s1)
 
 	printf("\n%sPlease choose Number(#)%s\n", GREEN, RESET);
 	ft_get_next_line(0, &create->line);
-	line = atoi(create->line);
-	free (create->line);
-	if (strcmp(s1, "topics") == 0)
+	if (ft_isdigit(create->line[0]))
 	{
-		if (line < create->topics)
-			return (line);
-	}
-	else if (strcmp(s1, "data") == 0)
-	{
-		if (line < create->dataentry)
-			return (line);
+		line = atoi(create->line);
+		free (create->line);
+		if (strcmp(s1, "topics") == 0)
+		{
+			if (line < create->topics)
+				return (line);
+		}
+		else if (strcmp(s1, "data") == 0)
+		{
+			if (line < create->dataentry)
+				return (line);
+		}
 	}
 	ft_error();
 	return (0);

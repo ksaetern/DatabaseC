@@ -37,7 +37,7 @@ void	list_dir(const char *path)
 
 void	ft_forbidc(char *line)
 {
-	if (strchr(line, ','))
+	if (strchr(line, ',') || strchr(line, '*'))
 	{
 		printf("[%s%40s%s]\n", RED, "Forbidden character found", RESET);
 		ft_create();

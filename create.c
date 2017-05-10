@@ -21,12 +21,12 @@ char			*ft_nameline(t_ftdb create, int topics, FILE *fp, char *dbname)
 	while (topiccreated <= topics)
 	{
 		printf("\n[Database:%s%31s%s]\n", YELLOW, dbname, RESET);
-		printf("Enter [%sName of Topics %d of %d%s]  %s(No ',')%s\n",
+		printf("Enter [%sName of Topics %d of %d%s]\n%s(No ',' or '*')%s\n",
 			CYAN, topiccreated, topics, RESET, RED, RESET);
 		ft_get_next_line(0, &create.topic);
 		ft_forbidc(create.topic);
-		printf("Suggestions of datatype:\n[%s%40s%s]\n",
-			GREEN, "string", RESET);
+		printf("Suggestions of datatype: %s(No ',' or '*')%s\n[%s%40s%s]\n",
+			RED, RESET, GREEN, "string", RESET);
 		printf("[(whole numbers)%s%25s%s]\n[(numbers and decimals)%s%18s%s]\
 			\n\n", GREEN, "int", RESET, GREEN, "float", RESET);
 		ft_get_next_line(0, &create.line);
