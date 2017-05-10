@@ -19,7 +19,7 @@ void	ft_datatype(char *s1, char *s2, int topiccreated, int topics)
 
 	i = 0;
 	j = 0;
-	while (ft_isalnum(s1[j]) || s1[j] == ',' || s1[j] == '*')
+	while (ft_isalnum(s1[j]) || s1[j] == ',' || s1[j] == '*' || ft_wspace_check(s1[j]))
 		j++;
 	s1[j] = '*';
 	j++;
