@@ -76,7 +76,7 @@ void		ft_openapend(char *str)
 		printf("\n%s[%40s]\n", RED, "Database name error");
 		ft_add();
 	}
-	fscanf(fp, "%c %s", create.str, create.addline);
+	fscanf(fp, "%s %s", create.str, create.addline);
 	topics = atoi(create.str);
 	if (topics == 0)
 	{
